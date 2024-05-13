@@ -63,4 +63,11 @@ public class Supplier {
     public void removeProduct(Product product) {
         suppliedProducts.remove(product);
     }
+    
+    public void addSupplier(Supplier supplier){}
+    
+    public void removeSupplier(Supplier supplier){}
+    
+    public void displayDetails(){}
+    
 }
