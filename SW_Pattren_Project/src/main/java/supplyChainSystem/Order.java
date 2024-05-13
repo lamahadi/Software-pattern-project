@@ -1,15 +1,18 @@
 package supplyChainSystem;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class Order {
+
     private int orderId;
     private Customer customer;
     private List<Product> products;
     private double totalAmount;
     private Date orderDate;
     private String deliveryAddress;
+    private OrderStatus status;
 
     public Order(int orderId, Customer customer, String deliveryAddress) {
         this.orderId = orderId;
@@ -18,6 +21,7 @@ public class Order {
         this.totalAmount = 0.0;
         this.orderDate = new Date();
         this.deliveryAddress = deliveryAddress;
+        this.status = new ProcessStatus();
     }
 
     public int getOrderId() {
@@ -42,6 +46,26 @@ public class Order {
 
     public String getDeliveryAddress() {
         return deliveryAddress;
+    }
+
+    public String getStatus() {
+       return status.toString();
+    }
+
+    public void setStatus(OrderStatus status) {
+        this.status = status;
+    }
+
+    public void processOrder() {
+        status.processOrder(this);
+    }
+
+    public void shipOrder() {
+        status.shipOrder(this);
+    }
+
+    public void deliverOrder() {
+        status.deliverOrder(this);
     }
 
     public void addProduct(Product product, int quantity) {
