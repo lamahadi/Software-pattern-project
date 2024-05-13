@@ -1,67 +1,98 @@
 package supplyChainSystem;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Warehouse {
-    private int globalWarehouseID;
+
+    private static Warehouse instance; // Singleton instance
+    private int warehouseID;
     private String name;
     private String address;
     private int capacity;
-    private Product product;
-    private static Warehouse instance;
+    private int stock;
+    private List<Product> products;
+    private List<WarehouseObserver> observers; // List of observers
 
-    private Warehouse() {
+    // Private constructor to prevent instantiation from outside
+    private Warehouse(int warehouseID, String name, String address, int capacity) {
+        this.warehouseID = warehouseID;
+        this.name = name;
+        this.address = address;
+        this.capacity = capacity;
+        this.stock = 0;
+        this.products = new ArrayList<>();
+        this.observers = new ArrayList<>();
     }
-    public static Warehouse getInstance() {
+
+    // Static method to get the Singleton instance
+    public static Warehouse getInstance(int warehouseID, String name, String address, int capacity) {
         if (instance == null) {
-            instance = new Warehouse();
+            instance = new Warehouse(warehouseID, name, address, capacity);
         }
         return instance;
     }
 
-    public int getglobalWarehouseID() {
-        return globalWarehouseID;
+    // Method to register observers
+    public void addObserver(WarehouseObserver observer) {
+        observers.add(observer);
     }
 
-    public void setglobalWarehouseID(int warehouseID) {
-        this.globalWarehouseID = warehouseID;
+    // Method to remove observers
+    public void removeObserver(WarehouseObserver observer) {
+        observers.remove(observer);
+    }
+
+    // Notify observers of changes
+    private void notifyObservers() {
+        for (WarehouseObserver observer : observers) {
+            observer.update();
+        }
+    }
+
+    public int getWarehouseID() {
+        return warehouseID;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getAddress() {
         return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
     }
 
     public int getCapacity() {
         return capacity;
     }
 
-    public void setCapacity(int capacity) {
-        this.capacity = capacity;
+    public void updateStock(int newStock) {
+        this.stock = newStock;
+        notifyObservers();
     }
 
-    public Product getProduct() {
-        return product;
+    public int getStock() {
+        return stock;
+    }
+
+    public void updateCapacity(int newCapacity) {
+        this.capacity = newCapacity;
+        notifyObservers();
+    }
+
+    public List<Product> getProducts() {
+        return products;
     }
 
     public void addProduct(Product product) {
-        this.product = product;
+        products.add(product);
     }
 
-    public void removeProduct() {
-        this.product = null;
+    public void removeProduct(Product product) {
+        products.remove(product);
     }
 
-    public boolean checkAvailability() {
-        return (product != null);
+    public boolean checkAvailability(Product product) {
+        return products.contains(product);
     }
 }
