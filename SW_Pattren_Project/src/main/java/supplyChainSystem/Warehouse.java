@@ -1,52 +1,67 @@
 package supplyChainSystem;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Warehouse {
-    private int warehouseID;
+    private int globalWarehouseID;
     private String name;
     private String address;
     private int capacity;
-    private List<Product> products;
+    private Product product;
+    private static Warehouse instance;
 
-    public Warehouse(int warehouseID, String name, String address, int capacity) {
-        this.warehouseID = warehouseID;
-        this.name = name;
-        this.address = address;
-        this.capacity = capacity;
-        this.products = new ArrayList<>();
+    private Warehouse() {
+    }
+    public static Warehouse getInstance() {
+        if (instance == null) {
+            instance = new Warehouse();
+        }
+        return instance;
     }
 
-    public int getWarehouseID() {
-        return warehouseID;
+    public int getglobalWarehouseID() {
+        return globalWarehouseID;
+    }
+
+    public void setglobalWarehouseID(int warehouseID) {
+        this.globalWarehouseID = warehouseID;
     }
 
     public String getName() {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getAddress() {
         return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public int getCapacity() {
         return capacity;
     }
 
-    public List<Product> getProducts() {
-        return products;
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
+    }
+
+    public Product getProduct() {
+        return product;
     }
 
     public void addProduct(Product product) {
-        products.add(product);
+        this.product = product;
     }
 
-    public void removeProduct(Product product) {
-        products.remove(product);
+    public void removeProduct() {
+        this.product = null;
     }
 
-    public boolean checkAvailability(Product product) {
-        return products.contains(product);
+    public boolean checkAvailability() {
+        return (product != null);
     }
 }
